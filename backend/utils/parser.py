@@ -1,32 +1,28 @@
-# parser.py
-import pdfplumber
-import docx
 import os
+import PyPDF2
+import docx
+from config import UPLOAD_DIR
 
-def extract_text_from_pdf(file_path: str) -> str:
-    """Extract text from a PDF file using pdfplumber."""
+def extract_text_from_pdf(file_path):
     text = ""
-    with pdfplumber.open(file_path) as pdf:
-        for page in pdf.pages:
+    with open(file_path, "rb") as f:
+        reader = PyPDF2.PdfReader(f)
+        for page in reader.pages:
             text += page.extract_text() or ""
     return text.strip()
 
-def extract_text_from_docx(file_path: str) -> str:
-    """Extract text from a DOCX file using python-docx."""
+def extract_text_from_docx(file_path):
     doc = docx.Document(file_path)
-    text = "\n".join([para.text for para in doc.paragraphs])
-    return text.strip()
+    return "\n".join([para.text for para in doc.paragraphs]).strip()
 
-def extract_text(file_path: str) -> str:
-    """Generic extractor that supports PDF, DOCX, TXT."""
+def parse_resume(file_path):
     ext = os.path.splitext(file_path)[1].lower()
-
     if ext == ".pdf":
         return extract_text_from_pdf(file_path)
     elif ext == ".docx":
         return extract_text_from_docx(file_path)
-    elif ext == ".txt":
-        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-            return f.read().strip()
     else:
-        raise ValueError(f"Unsupported file type: {ext}")
+        raise ValueError("Unsupported file format. Use PDF or DOCX.")
+
+def parse_job_description(text):
+    return text.strip()
