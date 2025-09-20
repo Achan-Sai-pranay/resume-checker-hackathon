@@ -103,6 +103,7 @@ elif page == "ℹ️ About":
         - **LangChain, LangGraph, LangSmith** for LLM pipelines
         - **Vector DBs & embeddings** for semantic matching
         - **OpenAI / HuggingFace models** for smart feedback
+                - just check this is done by pranay for checking updatation
 
         👉 Goal: Save recruiters time, reduce bias, and give candidates constructive feedback.
     """)
